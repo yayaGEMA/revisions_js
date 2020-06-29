@@ -17,8 +17,10 @@
 
     <script>
         // Code JS à écrire ici
-
-
+        document.querySelector('#start').addEventListener('click', function(){
+            let change = prompt('Nouveau contenu du titre ?');
+            document.querySelector('h1').textContent = change;
+        });
 
     </script>
 </body>
