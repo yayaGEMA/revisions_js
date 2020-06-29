@@ -24,8 +24,11 @@
 
     <script>
         // Code JS à écrire ici
-
-
+        document.querySelectorAll('.start').forEach(item => {
+            item.addEventListener('click', function(){
+                document.querySelector('h1').style.color = this.getAttribute('data-color');
+            })
+          });
 
     </script>
 </body>
