@@ -30,8 +30,16 @@
 
     <script>
         // Code JS à écrire ici
-
-
+        document.querySelector("#color-field").addEventListener('keyup', function(){
+            let inputValue = document.querySelector("#color-field").value;
+            let regex = /^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/ig;
+            let checker = regex.test(inputValue);
+            if(checker == true){
+                document.querySelector('body').style.backgroundColor = '#' + inputValue ;
+            } else {
+                document.querySelector('body').style.removeProperty("background-color") ;
+            }
+        });
 
     </script>
 </body>
