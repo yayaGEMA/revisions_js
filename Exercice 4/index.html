@@ -95,8 +95,10 @@
 
     <script>
         // Code JS à écrire ici
-
-
+        document.querySelector("#start").addEventListener('click', function(){
+            document.querySelector(".boxes").children[1].children[1].children[5].style.color = "red";
+            document.querySelector(".boxes").children[1].children[1].children[5].style.fontWeight = "bold";
+        });
 
     </script>
 </body>
