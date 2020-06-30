@@ -24,6 +24,11 @@
 
     <script>
         // Code JS à écrire ici
+        document.querySelector("#start").addEventListener('mouseenter', function(){
+            this.style.position = 'absolute';
+            this.style.top = (Math.random()*100)+'%';
+            this.style.left = (Math.random()*100)+'%'
+        });
 
 
 
