@@ -42,8 +42,29 @@
 
     <script>
         // Code JS à écrire ici
+        let myVar;
 
+        function myTimer() {
+            let number = document.querySelector('#counter-view').textContent;
+            let i = parseInt(number) + 1;
+            document.querySelector('#counter-view').textContent = i;
+        }
 
+        function myStopFunction() {
+            clearInterval(myVar);
+        }
+
+        document.querySelector('#start').addEventListener('click', function(){
+            document.getElementById('stop').disabled = false;
+            document.getElementById('start').disabled = true;
+            myVar = setInterval("myTimer()", 200);
+        });
+
+        document.querySelector('#stop').addEventListener('click', function(){
+            document.getElementById('start').disabled = false;
+            document.getElementById('stop').disabled = true;
+            myStopFunction();
+        });
 
     </script>
 </body>
