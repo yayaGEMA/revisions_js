@@ -32,7 +32,74 @@
     <script>
         // Code JS à écrire ici
 
+        // Faire apparaitre l'Overlay
+        function setOverlay(){
+            let overlay = document.createElement("div");
+            overlay.id = "overlay";
+            let oS = overlay.style;
+            oS.backgroundColor = "rgba(0, 0, 0, 0.6)";
+            oS.position = "fixed";
+            oS.top = "0";
+            oS.bottom = "0";
+            oS.left = "0";
+            oS.right = "0";
+            oS.display = "flex";
+            oS.alignItems = "center";
+            oS.justifyContent = "center";
+            document.querySelector('script').after(overlay);
+            let loading = document.createElement("img");
+            loading.src = 'ajax-loader.svg';
+            loading.alt = "loading";
+            loading.class = "loading";
+            document.querySelector('#overlay').prepend(loading);
+        };
 
+        // Fonction permettant de supprimer l'overlay
+        function removeOverlay(){
+            let overlay = document.querySelector('#overlay');
+            overlay.parentElement.removeChild( overlay );
+        };
+
+        document.querySelector('#start').addEventListener('click', function(){
+
+            // Création d'une nouvelle requête AJAX
+            let xhr = new XMLHttpRequest();
+
+            // Paramétrage du verbe et de l'adresse de la requête
+            xhr.open('GET', 'https://api.thecatapi.com/v1/images/search?size=full');
+
+            // Envoi de la requête (null = sans données POST)
+            xhr.send(null);
+
+            // Quand la requête sera revenue
+            xhr.addEventListener('readystatechange', function(){
+
+                // On vérifie que le serveur ait été trouvé
+                if(xhr.readyState === XMLHttpRequest.DONE){
+
+                    // On vérifie que la requête ait bien un code HTTP 200 (tout OK)
+                    if(xhr.status === 200){
+
+                        document.querySelector('#view').innerHTML = '';
+                        setOverlay();
+                        setTimeout(function(){
+                            removeOverlay();
+                            let data = xhr.response;
+                            let obj = JSON.parse(data);
+
+                            let catImage = document.createElement("img");
+                            catImage.src = obj[0]["url"];
+                            catImage.alt = "cat";
+                            catImage.class = "catImage";
+                            document.querySelector('#view').prepend(catImage);
+                        }, 1500);
+
+                    } else {
+                        alert('Problème avec le serveur !');
+                    }
+                }
+            });
+        });
 
     </script>
 </body>
