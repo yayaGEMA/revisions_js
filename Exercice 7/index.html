@@ -24,13 +24,25 @@
 
     <script>
         // Code JS à écrire ici
-        document.querySelector("#start").addEventListener('mouseenter', function(){
+
+        function randomBetween(min, max){
+            return Math.floor(Math.random() * (max- min +1) ) + min;
+        }
+
+        document.querySelector('#start').addEventListener('mouseenter', function(){
             this.style.position = 'absolute';
-            this.style.top = (Math.random()*100)+'%';
-            this.style.left = (Math.random()*100)+'%'
+
+            let buttonWidth = this.offsetWidth;
+            let buttonHeight = this.offsetHeight;
+
+            let minX = 0;
+            let maxX = window.innerWidth - buttonWidth;
+            let minY = 0;
+            let maxY = window.innerHeight - buttonHeight;
+
+            this.style.top = randomBetween(minY, maxY) + 'px';
+            this.style.left = randomBetween(minX, maxX) + 'px';
         });
-
-
 
     </script>
 </body>

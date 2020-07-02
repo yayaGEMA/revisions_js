@@ -95,11 +95,16 @@
 
     <script>
         // Code JS à écrire ici
-        document.querySelector("#start").addEventListener('click', function(){
-            document.querySelector(".boxes").children[1].children[1].children[5].style.color = "red";
-            document.querySelector(".boxes").children[1].children[1].children[5].style.fontWeight = "bold";
-        });
+        // document.querySelector("#start").addEventListener('click', function(){
+        //     document.querySelector(".boxes").children[1].children[1].children[5].style.color = "red";
+        //     document.querySelector(".boxes").children[1].children[1].children[5].style.fontWeight = "bold";
+        // });
 
+        document.querySelector("#start").addEventListener('click', function(){
+            let target = document.querySelectorAll('.box')[1].children[1].children[5];
+            target.style.color = "red";
+            target.style.fontWeight = "bold";
+        });
     </script>
 </body>
 </html>

@@ -62,6 +62,8 @@
 
         document.querySelector('#start').addEventListener('click', function(){
 
+            setOverlay();
+
             // Création d'une nouvelle requête AJAX
             let xhr = new XMLHttpRequest();
 
@@ -81,18 +83,19 @@
                     if(xhr.status === 200){
 
                         document.querySelector('#view').innerHTML = '';
-                        setOverlay();
-                        setTimeout(function(){
-                            removeOverlay();
-                            let data = xhr.response;
-                            let obj = JSON.parse(data);
 
-                            let catImage = document.createElement("img");
-                            catImage.src = obj[0]["url"];
-                            catImage.alt = "cat";
-                            catImage.class = "catImage";
-                            document.querySelector('#view').prepend(catImage);
-                        }, 1500);
+                        let data = xhr.response;
+                        let obj = JSON.parse(data);
+
+                        let catImage = new Image();
+                        catImage.src = obj[0]["url"];
+                        catImage.alt = "cat";
+
+                        catImage.onload = function(){
+                            removeOverlay();
+                        };
+
+                        document.querySelector('#view').prepend(catImage);
 
                     } else {
                         alert('Problème avec le serveur !');

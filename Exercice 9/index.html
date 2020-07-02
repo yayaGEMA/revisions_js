@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Révisions Javascript</title>
+    <title>Marceau</title>
     <style>
         body{
             text-align: center;
@@ -26,7 +26,186 @@
     <script>
         // Code JS à écrire ici
 
+        let game = {
+            view: document.querySelector('#gameView'),
 
+            start: function(){
+                this.view.style.display = "flex";
+                this.view.style.flexDirection = "column";
+                this.view.style.justifyContent = "center";
+                this.view.style.alignItems = "center";
+
+                // Création de la div "Commencer une partie"
+                let begin = document.createElement("div");
+                begin.innerHTML = "<p style='font-size:2rem; margin:auto;'>Commencer une partie</p>";
+                begin.id = "begin";
+                begin.style.backgroundColor = "white";
+                begin.style.marginBottom = "450px";
+                begin.style.width = "300px";
+                begin.style.height = "60px";
+                begin.style.padding = "0 10px";
+                begin.style.display = "flex";
+                begin.style.flexDirection = "column";
+                begin.style.cursor = "pointer";
+                this.view.prepend(begin);
+
+                let smallerGuess = [0];
+                let biggerGuess = [100];
+
+
+                // Ecouteur d'évènement sur la div
+                begin.addEventListener('click', function(){
+                    begin.style.display = "none";
+
+
+                    let upperDiv = document.createElement("div");
+                    upperDiv.innerHTML = "<p style='font-size:2rem; margin:auto;'>Nombre à trouver</p>";
+                    upperDiv.id = "upperDiv";
+                    upperDiv.style.backgroundColor = "white";
+                    upperDiv.style.width = "300px";
+                    upperDiv.style.height = "60px";
+                    upperDiv.style.padding = "0 10px";
+                    upperDiv.style.display = "flex";
+                    upperDiv.style.flexDirection = "column";
+                    upperDiv.style.marginBottom = '100px';
+                    upperDiv.style.height = "100px";
+                    document.querySelector("#gameView").prepend(upperDiv);
+
+                    // INFERIEUR OU SUPERIEUR
+                    let infOrSup = document.createElement("p");
+                    infOrSup.style.fontSize = "2rem";
+                    infOrSup.style.marginTop = "20px";
+                    infOrSup.innerHTML = "<strong style='color:red;'>" + smallerGuess + "</strong> < ? < <strong style='color:red;'>" + biggerGuess + "</strong>" ;
+                    document.querySelector('#upperDiv').append(infOrSup);
+
+                    // Création de la div de jeu
+                    let gameZone = document.createElement("div");
+                    gameZone.id = "gameZone";
+                    gameZone.style.marginBottom = "100px";
+                    gameZone.style.backgroundColor = "white";
+                    gameZone.style.width = "600px";
+                    gameZone.style.height = 'auto';
+                    gameZone.style.padding = '0 10px';
+                    gameZone.style.fontSize = '1.5rem';
+                    document.querySelector('#upperDiv').after(gameZone);
+
+                    let maxTests = 0;
+                    let amountOfTryLeft = 10;
+
+                    let guessNumberDiv = document.createElement("p");
+                    guessNumberDiv.textContent = "Essais restants : ";
+                    guessNumberDiv.id = "guessNumber";
+                    document.querySelector('#gameZone').prepend(guessNumberDiv);
+                    let guessLeft = document.createElement("strong");
+                    guessLeft.textContent = amountOfTryLeft;
+                    document.querySelector('#guessNumber').append(guessLeft);
+
+                    // Création de la phrase "Tentez de trouver le nombre mystère"
+                    let tryToFind = document.createElement("p");
+                    tryToFind.textContent = "Tentez de trouver le nombre mystère";
+                    document.querySelector('#gameZone').append(tryToFind);
+
+                    // Création de l'input
+                    let userInput = document.createElement('div');
+                    userInput.innerHTML = '<input type="text" id="input"></input><input type="submit" id="submit" style="margin-bottom:10px;"></input>';
+                    userInput.id = "myForm";
+                    document.querySelector('#gameZone').append(userInput);
+
+                    // Création du nombre aléatoire à trouver
+                    let numberToFind = Math.round((Math.random() * 100 ));
+
+                    // Création de la div d'avertissement
+                    let warning = document.createElement("p");
+                    warning.style.color = "red";
+                    warning.textContent = '';
+                    document.querySelector('#gameZone').append(warning);
+
+                    // Fonction(nement) du jeu
+                    function guess(){
+                        amountOfTryLeft = amountOfTryLeft -1 ;
+                        guessLeft.textContent = amountOfTryLeft;
+
+                        // Récupérer la valeur du champ
+                        let userResponse = document.getElementById('input').value;
+
+                        document.getElementById('input').value = '';
+
+                        function backToMenu(){
+                            let backToMenu = document.createElement('div');
+                            backToMenu.innerHTML = '<p style="margin:0;">Revenir au menu</p>';
+                            backToMenu.style.backgroundColor = 'white';
+                            backToMenu.style.height = "50px";
+                            backToMenu.style.width = "300px";
+                            backToMenu.style.fontSize = "2rem";
+                            backToMenu.style.cursor = "pointer";
+                            document.querySelector('#gameView').append(backToMenu);
+                            backToMenu.addEventListener('click', function(){
+                                backToMenu.style.display = "none";
+                                upperDiv.style.display = "none";
+                                game.start();
+                            });
+                        }
+
+                        if(userResponse == numberToFind){
+                            upperDiv.innerHTML = "<p style='color:green; font-size:1.5rem; margin-top:30px;'>Félicitations</p><p style='color:green; font-size:1.5rem;'>Le nombre à trouver était bien " + numberToFind + " !</p>";
+                            document.querySelector('#gameZone').parentElement.removeChild(document.querySelector('#gameZone'));
+                            upperDiv.style.marginBottom = "50px";
+                            upperDiv.style.height = "200px";
+                            backToMenu();
+                        } else if(
+                            userResponse <= 0 ||
+                            userResponse > 100 ||
+                            userResponse === undefined
+                        ){
+                            warning.textContent = "Vous devez mettre un chiffre entre 0 et 100 !";
+                            amountOfTryLeft = amountOfTryLeft +1 ;
+                            guessLeft.textContent = amountOfTryLeft;
+                        } else if(userResponse < numberToFind){
+                            warning.textContent = "Le nombre à trouver est plus grand que " + userResponse;
+
+                            smallerGuess.push(parseInt(userResponse));
+
+                            infOrSup.innerHTML = "<strong style='color:red;'>" + Math.max(...smallerGuess) + "</strong> < ? < " + "<strong style='color:red;'>" + Math.min(...biggerGuess) + "</strong>";
+                        } else if(userResponse > numberToFind){
+                            warning.textContent = "Le nombre à trouver est plus petit que " + userResponse;
+
+                            biggerGuess.push(parseInt(userResponse));
+
+                            infOrSup.innerHTML = "<strong style='color:red;'>" + Math.max(...smallerGuess) + "</strong> < ? < " + "<strong style='color:red;'>" + Math.min(...biggerGuess) + "</strong>";
+                        } else {
+                            warning.textContent = "Vous devez mettre un chiffre entre 0 et 100 !";
+                            amountOfTryLeft = amountOfTryLeft +1 ;
+                            guessLeft.textContent = amountOfTryLeft;
+                        }
+
+                        if (amountOfTryLeft == maxTests){
+                            // Affichage du PERDU
+                            upperDiv.innerHTML = "<p style='color:red;  font-size:1.5rem; margin:0;'>Perdu !</p><p style='color:red; font-size:1.5rem;'>Le nombre à trouver était " + numberToFind + " !</p>";
+                            gameZone.parentElement.removeChild(gameZone);
+                            infOrSup.parentElement.removeChild(infOrSup);
+                            nS.height = "200px";
+                            nS.width = "300px";
+                            backToMenu();
+                        }
+                    }
+
+                    // Ecouteur d'évènement du submit
+                    document.querySelector('#submit').addEventListener('click', function(){
+                        guess();
+                    });
+
+                    // Ecouteur d'évènement de la touche d'entrée
+                    document.querySelector('#input').addEventListener('keyup', function(e) {
+                        if (e.key === 'Enter'){
+                            guess();
+                        }
+                    });
+                });
+
+            }
+        };
+
+        game.start();
 
     </script>
 </body>

@@ -24,12 +24,18 @@
 
     <script>
         // Code JS à écrire ici
+        // document.querySelectorAll('.start').forEach(item => {
+        //     item.addEventListener('click', function(){
+        //         document.querySelector('h1').style.color = this.getAttribute('data-color');
+        //     })
+        //   });
+
         document.querySelectorAll('.start').forEach(item => {
             item.addEventListener('click', function(){
-                document.querySelector('h1').style.color = this.getAttribute('data-color');
-            })
-          });
-
+                let color = this.dataset.color;
+                document.querySelector('h1').className = color;
+            });
+        });
     </script>
 </body>
 </html>
